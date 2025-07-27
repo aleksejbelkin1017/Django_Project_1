@@ -1,0 +1,83 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Овощи",
+        "description": "Натуральная польза в каждом продукте! Наша категория овощей представляет широкий ассортимент свежих, экологически чистых и полезных овощей, которые станут основой вашего здорового рациона."
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Фрукты",
+        "description": "Природная кладовая здоровья — именно так можно назвать нашу коллекцию свежих фруктов, собранных со всех уголков мира. Здесь вы найдёте самые сочные, спелые и полезные плоды для вашего стола."
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Огурец",
+        "description": null,
+        "image": "",
+        "category": 1,
+        "price": 150,
+        "create_at": "2025-07-10",
+        "update_at": "2025-07-10"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "Помидор",
+        "description": null,
+        "image": "",
+        "category": 1,
+        "price": 300,
+        "create_at": "2025-07-10",
+        "update_at": "2025-07-10"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Слива",
+        "description": null,
+        "image": "",
+        "category": 2,
+        "price": 170,
+        "create_at": "2025-07-10",
+        "update_at": "2025-07-10"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+        "name": "Яблоко",
+        "description": null,
+        "image": "",
+        "category": 2,
+        "price": 190,
+        "create_at": "2025-07-10",
+        "update_at": "2025-07-10"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "Абрикос",
+        "description": null,
+        "image": "",
+        "category": 2,
+        "price": 200,
+        "create_at": "2025-07-10",
+        "update_at": "2025-07-10"
+    }
+}
+]
