@@ -48,8 +48,8 @@ class Product(models.Model):
     price = models.IntegerField(
         verbose_name="Цена за покупку", help_text="Введите цену за покупку"
     )
-    create_at = models.DateField(verbose_name="Дата создания")
-    update_at = models.DateField(verbose_name="Дата последнего изменения")
+    create_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    update_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
 
     class Meta:
         verbose_name = "Продукт"
