@@ -1,7 +1,6 @@
 from pathlib import Path
 import os
 
-from django.conf.global_settings import MEDIA_URL, MEDIA_ROOT
 from dotenv import load_dotenv
 
 # Загрузка переменных из .env файла
@@ -24,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "catalog",
     "blog",
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
@@ -81,6 +81,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Кастомная модель пользователя
+AUTH_USER_MODEL = "users.User"
+
+# Куда редиректить при входе/выходе/неавторизованном доступе
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "catalog:products_list"
+LOGOUT_REDIRECT_URL = "catalog:products_list"
+
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -98,3 +106,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# --- Почта (Яндекс SMTP) ---
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
