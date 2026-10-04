@@ -48,6 +48,11 @@ class Product(models.Model):
     price = models.IntegerField(
         verbose_name="Цена за покупку", help_text="Введите цену за покупку"
     )
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name="Опубликован",
+        help_text="Отметьте, чтобы опубликовать продукт",
+    )
     create_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     update_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
 
@@ -55,6 +60,9 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category", "price"]
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
+        ]
 
     def __str__(self):
         return self.name
