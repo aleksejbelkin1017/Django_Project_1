@@ -34,6 +34,13 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'catalog/product_update.html'
     success_url = reverse_lazy('catalog:products_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        # Пропускаем владельца или модератора (у него есть право delete_product)
+        if product.owner != request.user and not request.user.has_perm('catalog.delete_product'):
+            return HttpResponseForbidden("Вы не можете редактировать чужой продукт.")
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         # Перенаправление на страницу просмотра товара
         return reverse('catalog:products_detail', kwargs={'pk': self.object.pk})
@@ -43,6 +50,13 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_delete.html'
     success_url = reverse_lazy('catalog:products_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        # Пропускаем владельца или модератора (у него есть право delete_product)
+        if product.owner != request.user and not request.user.has_perm('catalog.delete_product'):
+            return HttpResponseForbidden("Вы не можете удалить чужой продукт.")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductUnpublishView(LoginRequiredMixin, View):
