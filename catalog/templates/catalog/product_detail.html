@@ -1,27 +1,55 @@
 {% extends 'catalog/base.html' %}
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col">
-                    <div class="card shadow-sm">
-                        {% if product.image %}
-                        <img src="{{ product.image.url }}">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <p class="card-text">Название: {{ object.name }}</p>
+                        <p class="card-text">Категория: {{ object.category }}</p>
+                        <p class="card-text">Описание: {{ object.description }}</p>
+                        <p class="card-text">Цена: {{ object.price }} руб.</p>
+
+                        {# Статус публикации — видно владельцу и модератору #}
+                        {% if user == object.owner or perms.catalog.delete_product %}
+                            <p class="card-text">
+                                Статус:
+                                {% if object.is_published %}
+                                    <span class="text-success">Опубликован</span>
+                                {% else %}
+                                    <span class="text-danger">Не опубликован</span>
+                                {% endif %}
+                            </p>
                         {% endif %}
-                        <div class="card-body">
-                            <p class="card-text">Название: {{ object.name }}</p>
-                            <p class="card-text">Категория: {{ object.category }}</p>
-                            <p class="card-text">Описание: {{ object.description }}</p>
-                            <p class="card-text">Цена: {{ object.price }} руб.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="{% url 'catalog:products_list' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
-                                </div>
-                                <small class="text-body-secondary">Дата изменения: {{ product.update_at|date:"d M Y" }}</small></div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{% url 'catalog:products_list' %}" class="btn btn-sm btn-outline-secondary">Назад</a>
+
+                                {# Редактировать и удалить — владелец или модератор #}
+                                {% if user == object.owner or perms.catalog.delete_product %}
+                                    <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                                    <a href="{% url 'catalog:product_delete' object.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                                {% endif %}
+
+                                {# Отмена публикации — только модератор #}
+                                {% if perms.catalog.can_unpublish_product and object.is_published %}
+                                    <form action="{% url 'catalog:product_unpublish' object.pk %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-warning">Отменить публикацию</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            <small class="text-body-secondary">Дата изменения: {{ product.update_at|date:"d M Y" }}</small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
