@@ -13,7 +13,8 @@ from django.views.generic import (
 )
 
 from catalog.forms import ProductForm
-from catalog.models import Product
+from catalog.models import Product, Category
+from catalog.services import get_products_by_category
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -86,3 +87,18 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 class ContactsView(TemplateView):
     # Контакты — не про продукты, оставляем публичными
     template_name = "catalog/contacts.html"
+
+
+class CategoryProductsView(ListView):
+    """Список продуктов в указанной категории. Использует сервис с кешированием."""
+    template_name = "catalog/category_products.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        category_id = self.kwargs.get("pk")
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category"] = get_object_or_404(Category, pk=self.kwargs.get("pk"))
+        return context
